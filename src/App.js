@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AccountsDisplay from "./AccountsDisplay/AccountsDisplay";
-import SnowBallAmortizationTable from "./SnowBallAmortizationTable";
+import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
 
 function App() {
   let [accounts, updateAccounts] = useState([
@@ -23,10 +23,18 @@ function App() {
       APR: 21.99,
     },
   ]);
+
+  useEffect(() => {
+    let sortedAccounts = accounts.sort((firstBalance, secondBalance) =>
+      firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1
+    );
+    updateAccounts(sortedAccounts);
+  }, [accounts]);
+
   return (
     <div>
       <AccountsDisplay accounts={accounts} updateAccounts={updateAccounts} />
-      <SnowBallAmortizationTable accounts={accounts} />
+      <SnowBallDisplay accounts={accounts} />
     </div>
   );
 }

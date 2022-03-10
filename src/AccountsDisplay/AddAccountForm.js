@@ -1,17 +1,14 @@
 import { useState } from "react";
+import Account from "../Account";
 import { ReactComponent as AddIcon } from "../assets/AddIcon.svg";
 
 export default function AddAccountForm({ accounts, updateAccounts }) {
-  const [newAccountInput, setNewAccount] = useState({
-    name: "",
-    "balance Due": "",
-    "minimum Payment Due": "",
-    APR: "",
-  });
+  const [newAccountInput, setNewAccount] = useState(new Account());
 
   function handleAddAccount(event) {
     event.preventDefault();
     updateAccounts([...accounts, newAccountInput]);
+    setNewAccount(new Account());
   }
   return (
     <tr key="inputRow">
