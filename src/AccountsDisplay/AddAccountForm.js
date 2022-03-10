@@ -8,7 +8,7 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
   function handleAddAccount(event) {
     event.preventDefault();
     updateAccounts([...accounts, newAccountInput]);
-    setNewAccount(new Account());
+    setNewAccount(new Account("","","",""));
   }
   return (
     <tr key="inputRow">
@@ -35,7 +35,7 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
           type="number"
           value={newAccountInput["balance Due"]}
           onChange={(e) =>
-            setNewAccount({ ...newAccountInput, "balance Due": e.target.value })
+            setNewAccount({ ...newAccountInput, "balance Due": parseFloat(e.target.value) })
           }
         ></input>
       </td>
@@ -48,7 +48,7 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
           type="number"
           value={newAccountInput["APR"]}
           onChange={(e) =>
-            setNewAccount({ ...newAccountInput, APR: e.target.value })
+            setNewAccount({ ...newAccountInput, APR: parseFloat(e.target.value) })
           }
         ></input>
       </td>
@@ -63,7 +63,7 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
           onChange={(e) =>
             setNewAccount({
               ...newAccountInput,
-              "minimum Payment Due": e.target.value,
+              "minimum Payment Due": parseFloat(e.target.value),
             })
           }
         ></input>

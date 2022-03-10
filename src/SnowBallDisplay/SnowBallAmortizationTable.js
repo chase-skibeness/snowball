@@ -41,28 +41,25 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
     );
   }, [accounts]);
 
-  function calculateCompoundInterest(principal, time, rate, periods) {
-    return principal * (Math.pow((1 + (rate / periods)), (periods * time)));
+  function calculateMonthInterest(principal, rate) {
+    return principal + (principal * rate);
   }
 
   function buildAmoritizationTableRow(accountsArray, monthsElapsed) {
 
-    if (accountsArray.filter((account) => account["balance Due"] <= 0).length < 1) {
+    if (accountsArray.every((account) => account["balance Due"] <= 0)) {
       return null;
     }
 
-    let smallestAccountBalance = accountsArray.sort((firstBalance, secondBalance) => firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1)[0];
-    console.log(smallestAccountBalance);
+    let smallestAccountBalance = accountsArray.filter((account) => account["balance Due"] > 0).sort((firstBalance, secondBalance) => firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1)[0];
     let paidOffAccountBonus = accountsArray.filter((account) => account["balance Due"] <= 0).reduce((bonus, account) => bonus += account["minimum Payment Due"], 0);
 
     let newAccountsArray = accountsArray.map((account) => {
-      const newBalanceDue = calculateCompoundInterest(account["balance Due"], 1/12, account.APR / 100, 12);
+      const newBalanceDue = calculateMonthInterest(account["balance Due"], (account.APR / 100) / 12);
       const payment = account["minimum Payment Due"];
       const paymentWithBonus = payment + (bonusPayment ? bonusPayment : 0) + (paidOffAccountBonus ? paidOffAccountBonus : 0);
       
       if (account === smallestAccountBalance) {
-        console.log("payment with bonus");
-        console.log(paymentWithBonus);
         return new Account(
           account.name,
           (newBalanceDue - paymentWithBonus > 0 ? newBalanceDue - paymentWithBonus : 0),
@@ -70,16 +67,13 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
           account.APR
         );
       } else {
-        console.log("payment without bonus");
-        console.log(payment);
         return new Account(
         account.name,
         (newBalanceDue - payment > 0 ? newBalanceDue - payment : 0),
         account["minimum Payment Due"],
         account.APR
         );
-      }
-      
+      }      
     });
 
     let total = newAccountsArray.reduce((totalDebt, account) => totalDebt += account["balance Due"], 0);
