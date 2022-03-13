@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { useState, useEffect } from "react";
 import AccountsDisplay from "./AccountsDisplay/AccountsDisplay";
 import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
@@ -13,10 +14,10 @@ function App() {
   }, [accounts]);
 
   return (
-    <div>
+    <Container maxWidth="sm">
       <AccountsDisplay accounts={accounts} updateAccounts={updateAccounts} />
       <SnowBallDisplay accounts={accounts} />
-    </div>
+    </Container>
   );
 }
 

@@ -1,7 +1,7 @@
+import { Edit, Save } from "@mui/icons-material";
+import { IconButton, TableCell, TableRow } from "@mui/material";
 import { useState } from "react";
 import Account from "../Account";
-import { ReactComponent as EditIcon } from "../assets/EditIcon.svg";
-import { ReactComponent as SaveIcon } from "../assets/SaveIcon.svg";
 
 export default function AccountDataRow({ account, updateAccounts, accounts }) {
   const [isReadOnly, setReadOnly] = useState(true);
@@ -30,57 +30,62 @@ export default function AccountDataRow({ account, updateAccounts, accounts }) {
   }
 
   return (
-    <tr key={account.name}>
-      <td>
+    <TableRow key={account.name}>
+      <TableCell>
         <form id={account.name + "Form"}>
-          <input
+          {isReadOnly ? localAccountInput.name :
+            <input
             form={account.name + "Form"}
             type="text"
             onChange={(e) => handleAccountEdit(e, "name")}
-            value={localAccountInput.name}
-            readOnly={isReadOnly}
-          ></input>
+            defaultValue={localAccountInput.name}
+            />
+          }
         </form>
-      </td>
-      <td>
-        <input
+      </TableCell>
+      <TableCell>
+        {isReadOnly ? localAccountInput["balance Due"] :
+          <input
           form={account.name + "Form"}
           type="number"
           step={0.01}
           onChange={(e) => handleAccountEdit(e, "balance Due")}
-          value={localAccountInput["balance Due"]}
-          readOnly={isReadOnly}
-        ></input>
-      </td>
-      <td>
-        <input
+          defaultValue={localAccountInput["balance Due"]}
+          />
+        }
+      </TableCell>
+      <TableCell>
+        {isReadOnly ? localAccountInput.APR :
+          <input
           form={account.name + "Form"}
           type="number"
           step={0.01}
           onChange={(e) => handleAccountEdit(e, "APR")}
-          value={localAccountInput.APR}
-          readOnly={isReadOnly}
-        ></input>
-      </td>
-      <td>
-        <input
+          defaultValue={localAccountInput["APR"]}
+          />
+        }
+      </TableCell>
+      <TableCell>
+        {isReadOnly ? localAccountInput["minimum Payment Due"] :
+          <input
           form={account.name + "Form"}
           type="number"
           step={0.01}
           onChange={(e) => handleAccountEdit(e, "minimum Payment Due")}
-          value={localAccountInput["minimum Payment Due"]}
-          readOnly={isReadOnly}
-        ></input>
-      </td>
-      <td>
-        <button
+          defaultValue={localAccountInput["minimum Payment Due"]}
+          />
+        }
+      </TableCell>
+      <TableCell>
+        <IconButton
+          variant="contained"
           form={account.name + "Form"}
           type="submit"
           onClick={(e) => handleAccountEditSave(e)}
         >
-          {isReadOnly ? <EditIcon /> : <SaveIcon />}
-        </button>
-      </td>
-    </tr>
+          {isReadOnly ? <Edit /> : <Save />}
+        </IconButton>
+      </TableCell>
+    </TableRow>
   );
 }
