@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { AppBar, Container, Toolbar } from "@mui/material";
 import { useState, useEffect } from "react";
 import AccountsDisplay from "./AccountsDisplay/AccountsDisplay";
 import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
@@ -14,7 +14,12 @@ function App() {
   }, [accounts]);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="lg">
+      <AppBar position="static">
+        <Toolbar>
+
+        </Toolbar>
+      </AppBar>
       <AccountsDisplay accounts={accounts} updateAccounts={updateAccounts} />
       <SnowBallDisplay accounts={accounts} />
     </Container>
