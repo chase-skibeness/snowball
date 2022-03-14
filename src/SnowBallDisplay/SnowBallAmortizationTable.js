@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import { useEffect, useState } from "react";
 import Account from "../Account";
 
-export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
+export default function SnowBallAmortizationTable({ accounts, bonusPayment, startPayment }) {
   const [totalDebt, setTotalDebt] = useState(0);
 
   useEffect(() => {
@@ -14,10 +14,10 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
     );
 
     return (
-      <SnowBallAmortizationTable accounts={accounts} bonusPayment={bonusPayment} />
+      <SnowBallAmortizationTable accounts={accounts} bonusPayment={bonusPayment} startPayment={startPayment} />
 
     );
-  }, [accounts, bonusPayment]);
+  }, [accounts, bonusPayment, startPayment]);
 
   function calculateMonthInterest(principal, rate) {
     return principal + principal * rate;

@@ -6,14 +6,24 @@ import {
   Typography,
   IconButton,
   Grid,
-  Card
+  Card,
+  Divider
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Upload, Download, Menu } from "@mui/icons-material";
 import AccountsDisplay from "./AccountsDisplay/AccountsDisplay";
 import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
+import { ThemeProvider } from "@emotion/react";
+import createTheme from "@mui/material/styles/createTheme";
+import { Box } from "@mui/system";
 
 function App() {
+  const darkTheme = createTheme({
+    pallette: {
+      mode: 'dark',
+    },
+  });
+
   let [accounts, updateAccounts] = useState([]);
 
   function exportAccounts(event) {
@@ -65,6 +75,13 @@ function App() {
         </Grid>
         <Grid item xs={12}>
           <AccountsDisplay accounts={accounts} updateAccounts={updateAccounts} />
+        </Grid>
+        <Grid item xs={12}>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6" align="justify" component="div" sx={{flexGrow: 1}}>SnowBall Amoritization</Typography>
+            </Toolbar>
+          </AppBar>
         </Grid>
         <Grid item xs={12}>
           <SnowBallDisplay accounts={accounts} />

@@ -1,6 +1,5 @@
 import {
   Grid,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -15,7 +14,7 @@ export default function AccountsDisplay({ accounts, updateAccounts }) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <TableContainer>
+      <TableContainer>
           <Table>
             <TableHead>
               <TableRow key="HeaderRow">
