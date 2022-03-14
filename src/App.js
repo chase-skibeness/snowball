@@ -7,7 +7,7 @@ import {
   IconButton,
   Grid,
   Card,
-  Divider
+  Divider,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Upload, Download, Menu } from "@mui/icons-material";
@@ -20,7 +20,7 @@ import { Box } from "@mui/system";
 function App() {
   const darkTheme = createTheme({
     pallette: {
-      mode: 'dark',
+      mode: "dark",
     },
   });
 
@@ -56,30 +56,43 @@ function App() {
                 size="large"
                 edge="start"
                 color="inherit"
-                sx={{mr: 2}}
+                sx={{ mr: 2 }}
               >
                 <Menu />
               </IconButton>
-              <Typography variant="h4" component="div" sx={{flexGrow: 1}}>SnowBall</Typography>
-              <Button 
-                color="inherit" 
-                onClick={(e) => exportAccounts(e)}
-                endIcon={<Download />}
-              >Export Accounts</Button>
+              <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                SnowBall
+              </Typography>
               <Button
                 color="inherit"
-                endIcon={<Upload />}
-              >Import Accounts</Button>
+                onClick={(e) => exportAccounts(e)}
+                endIcon={<Download />}
+              >
+                Export Accounts
+              </Button>
+              <Button color="inherit" endIcon={<Upload />}>
+                Import Accounts
+              </Button>
             </Toolbar>
           </AppBar>
         </Grid>
         <Grid item xs={12}>
-          <AccountsDisplay accounts={accounts} updateAccounts={updateAccounts} />
+          <AccountsDisplay
+            accounts={accounts}
+            updateAccounts={updateAccounts}
+          />
         </Grid>
         <Grid item xs={12}>
           <AppBar position="static">
             <Toolbar>
-              <Typography variant="h6" align="justify" component="div" sx={{flexGrow: 1}}>SnowBall Amoritization</Typography>
+              <Typography
+                variant="h6"
+                align="justify"
+                component="div"
+                sx={{ flexGrow: 1 }}
+              >
+                SnowBall Amoritization
+              </Typography>
             </Toolbar>
           </AppBar>
         </Grid>

@@ -19,7 +19,7 @@ export default function SnowBallDisplay({ accounts }) {
       </Grid>
       <Grid item xs={2} />
       <Grid item xs={4}>
-        <SnowBallStartForm 
+        <SnowBallStartForm
           startPayment={startPayment}
           setStartPayments={setStartPayment}
         />
