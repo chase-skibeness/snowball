@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import Account from "../Account";
-import { ReactComponent as AddIcon } from "../assets/AddIcon.svg";
 
 export default function AddAccountForm({ accounts, updateAccounts }) {
   const [newAccountInput, setNewAccount] = useState(new Account());

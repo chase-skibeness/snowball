@@ -1,3 +1,4 @@
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import Account from "../Account";
 
@@ -13,33 +14,10 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
     );
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Snowball Sorted Balances</th>
-          </tr>
-          <tr>
-            <th>Time</th>
-            {accounts.map((account) => {
-              return <th key={Math.random()}>{account.name}</th>;
-            })}
-            <th>Total Debt</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Start</td>
-            {accounts.map((account) => {
-              return <td key={Math.random()}>{account["balance Due"]}</td>;
-            })}
-            <td>{totalDebt}</td>
-          </tr>
-          {buildAmoritizationTableRow(accounts, 1)}
-        </tbody>
-      </table>
+      <SnowBallAmortizationTable accounts={accounts} bonusPayment={bonusPayment} />
+
     );
-  }, [accounts]);
+  }, [accounts, bonusPayment]);
 
   function calculateMonthInterest(principal, rate) {
     return principal + principal * rate;
@@ -96,46 +74,52 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
 
     return (
       <>
-        <tr>
-          <td>Month {monthsElapsed}</td>
+        <TableRow>
+          <TableCell>Month {monthsElapsed}</TableCell>
           {newAccountsArray.map((account) => {
-            return <td>{account["balance Due"].toFixed(2)}</td>;
+            return <TableCell>{account["balance Due"].toFixed(2)}</TableCell>;
           })}
-          <td>{total.toFixed(2)}</td>
-          <td>{paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}</td>
-        </tr>
+          <TableCell>{total.toFixed(2)}</TableCell>
+          <TableCell>{paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}</TableCell>
+        </TableRow>
         {buildAmoritizationTableRow(newAccountsArray, monthsElapsed + 1)}
       </>
     );
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Snowball Sorted Balances</th>
-        </tr>
-        <tr>
-          <th>Time</th>
+  <TableContainer>
+    <Table>
+      <TableHead>
+        <TableRow>
+            <TableCell colSpan={accounts.length + 3} />
+        </TableRow>
+        <TableRow>
+          <TableCell></TableCell>
+          <TableCell colSpan={accounts.length + 2}>Snowball Sorted Balances</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>Time</TableCell>
           {accounts.map((account) => {
-            return <th key={Math.random()}>{account.name}</th>;
+            return <TableCell key={Math.random()}>{account.name}</TableCell>;
           })}
-          <th>Total Debt</th>
-          <th>Snowball Bonus</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Start</td>
+          <TableCell>Total Debt</TableCell>
+          <TableCell>Snowball Bonus</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>Start</TableCell>
           {accounts.map((account) => {
-            return <td key={Math.random()}>{account["balance Due"]}</td>;
+            return <TableCell key={Math.random()}>{account["balance Due"]}</TableCell>;
           })}
-          <td>{totalDebt}</td>
-          <td></td>
-        </tr>
+          <TableCell>{totalDebt}</TableCell>
+          <TableCell></TableCell>
+        </TableRow>
         {buildAmoritizationTableRow(accounts, 1)}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
+  </TableContainer>  
+    
   );
 }
