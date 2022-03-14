@@ -1,8 +1,19 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import Account from "../Account";
 
-export default function SnowBallAmortizationTable({ accounts, bonusPayment, startPayment }) {
+export default function SnowBallAmortizationTable({
+  accounts,
+  bonusPayment,
+  startPayment,
+}) {
   const [totalDebt, setTotalDebt] = useState(0);
 
   useEffect(() => {
@@ -14,8 +25,11 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment, star
     );
 
     return (
-      <SnowBallAmortizationTable accounts={accounts} bonusPayment={bonusPayment} startPayment={startPayment} />
-
+      <SnowBallAmortizationTable
+        accounts={accounts}
+        bonusPayment={bonusPayment}
+        startPayment={startPayment}
+      />
     );
   }, [accounts, bonusPayment, startPayment]);
 
@@ -80,7 +94,9 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment, star
             return <TableCell>{account["balance Due"].toFixed(2)}</TableCell>;
           })}
           <TableCell>{total.toFixed(2)}</TableCell>
-          <TableCell>{paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}</TableCell>
+          <TableCell>
+            {paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}
+          </TableCell>
         </TableRow>
         {buildAmoritizationTableRow(newAccountsArray, monthsElapsed + 1)}
       </>
@@ -88,38 +104,43 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment, star
   }
 
   return (
-  <TableContainer>
-    <Table>
-      <TableHead>
-        <TableRow>
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
             <TableCell colSpan={accounts.length + 3} />
-        </TableRow>
-        <TableRow>
-          <TableCell></TableCell>
-          <TableCell colSpan={accounts.length + 2}>Snowball Sorted Balances</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Time</TableCell>
-          {accounts.map((account) => {
-            return <TableCell key={Math.random()}>{account.name}</TableCell>;
-          })}
-          <TableCell>Total Debt</TableCell>
-          <TableCell>Snowball Bonus</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <TableRow>
-          <TableCell>Start</TableCell>
-          {accounts.map((account) => {
-            return <TableCell key={Math.random()}>{account["balance Due"]}</TableCell>;
-          })}
-          <TableCell>{totalDebt}</TableCell>
-          <TableCell></TableCell>
-        </TableRow>
-        {buildAmoritizationTableRow(accounts, 1)}
-      </TableBody>
-    </Table>
-  </TableContainer>  
-    
+          </TableRow>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell colSpan={accounts.length + 2}>
+              Snowball Sorted Balances
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Time</TableCell>
+            {accounts.map((account) => {
+              return <TableCell key={Math.random()}>{account.name}</TableCell>;
+            })}
+            <TableCell>Total Debt</TableCell>
+            <TableCell>Snowball Bonus</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Start</TableCell>
+            {accounts.map((account) => {
+              return (
+                <TableCell key={Math.random()}>
+                  {account["balance Due"]}
+                </TableCell>
+              );
+            })}
+            <TableCell>{totalDebt}</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+          {buildAmoritizationTableRow(accounts, 1)}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
