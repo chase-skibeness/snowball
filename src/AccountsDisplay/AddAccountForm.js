@@ -33,6 +33,7 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
         <TextField 
           variant="standard"
           label="Account Balance"
+          form="accountAddForm"
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>
           }}
@@ -44,33 +45,34 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
         />
       </TableCell>
       <TableCell>
-        <input
-          placeholder="APR"
-          required={true}
+        <TextField 
+          variant="standard"
+          label="Account APR"
           form="accountAddForm"
-          step={0.01}
-          type="number"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">%</InputAdornment>
+          }}
+          required={true}
           value={newAccountInput["APR"]}
-          onChange={(e) =>
-            setNewAccount({ ...newAccountInput, APR: parseFloat(e.target.value) })
-          }
-        ></input>
+          onChange={(e) => setNewAccount({...newAccountInput, "APR": parseFloat(e.target.value) })}
+          type="number"
+          step={0.01}
+        />
       </TableCell>
       <TableCell>
-        <input
-          placeholder="Minimum Payment Due"
-          required={true}
+        <TextField 
+          variant="standard"
+          label="Minimum Payment Due"
           form="accountAddForm"
-          step={0.01}
-          type="number"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>
+          }}
+          required={true}
           value={newAccountInput["minimum Payment Due"]}
-          onChange={(e) =>
-            setNewAccount({
-              ...newAccountInput,
-              "minimum Payment Due": parseFloat(e.target.value),
-            })
-          }
-        ></input>
+          onChange={(e) => setNewAccount({...newAccountInput, "minimum Payment Due": parseFloat(e.target.value) })}
+          type="number"
+          step={0.01}
+        />
       </TableCell>
       <TableCell>
         <IconButton
