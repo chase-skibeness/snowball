@@ -7,22 +7,13 @@ import {
   IconButton,
   Grid,
   Card,
-  Divider,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Upload, Download, Menu } from "@mui/icons-material";
 import AccountsDisplay from "./AccountsDisplay/AccountsDisplay";
 import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
-import { ThemeProvider } from "@emotion/react";
-import createTheme from "@mui/material/styles/createTheme";
-import { Box } from "@mui/system";
 
 function App() {
-  const darkTheme = createTheme({
-    pallette: {
-      mode: "dark",
-    },
-  });
 
   let [accounts, updateAccounts] = useState([]);
 
