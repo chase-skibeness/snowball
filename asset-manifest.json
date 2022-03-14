@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/snowball/static/css/main.e6c13ad2.css",
+    "main.js": "/snowball/static/js/main.48682e56.js",
+    "static/js/787.b2b0c254.chunk.js": "/snowball/static/js/787.b2b0c254.chunk.js",
+    "index.html": "/snowball/index.html",
+    "main.e6c13ad2.css.map": "/snowball/static/css/main.e6c13ad2.css.map",
+    "main.48682e56.js.map": "/snowball/static/js/main.48682e56.js.map",
+    "787.b2b0c254.chunk.js.map": "/snowball/static/js/787.b2b0c254.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.48682e56.js"
+  ]
+}
