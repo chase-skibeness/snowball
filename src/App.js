@@ -16,9 +16,7 @@ function App() {
   return (
     <Container maxWidth="lg">
       <AppBar position="static">
-        <Toolbar>
-
-        </Toolbar>
+        <Toolbar></Toolbar>
       </AppBar>
       <AccountsDisplay accounts={accounts} updateAccounts={updateAccounts} />
       <SnowBallDisplay accounts={accounts} />

@@ -1,18 +1,27 @@
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import AccountDataRow from "./AccountDataRow";
 import AddAccountForm from "./AddAccountForm";
 
 export default function AccountsDisplay({ accounts, updateAccounts }) {
-
   function exportAccounts(event) {
     event.preventDefault();
     let dataStr = JSON.stringify(accounts);
-    let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    let exportFileDefaultName = 'SnowBallAccounts.json';
-    let linkElement = document.createElement('a');
+    let dataUri =
+      "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+    let exportFileDefaultName = "SnowBallAccounts.json";
+    let linkElement = document.createElement("a");
 
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.setAttribute("href", dataUri);
+    linkElement.setAttribute("download", exportFileDefaultName);
     linkElement.click();
   }
 
@@ -39,7 +48,10 @@ export default function AccountsDisplay({ accounts, updateAccounts }) {
                   />
                 );
               })}
-              <AddAccountForm accounts={accounts} updateAccounts={updateAccounts} />
+              <AddAccountForm
+                accounts={accounts}
+                updateAccounts={updateAccounts}
+              />
             </TableBody>
           </Table>
         </TableContainer>
@@ -49,13 +61,13 @@ export default function AccountsDisplay({ accounts, updateAccounts }) {
           <Grid item xs={6}>
             <label>
               Export SnowBall Accounts <br />
-              <button onClick={(e) => exportAccounts(e)} >Download File</button>
+              <button onClick={(e) => exportAccounts(e)}>Download File</button>
             </label>
           </Grid>
           <Grid item xs={6}>
             <label>
-            Import SnowBall Accounts <br />
-            <button >Upload File</button>
+              Import SnowBall Accounts <br />
+              <button>Upload File</button>
             </label>
           </Grid>
         </form>

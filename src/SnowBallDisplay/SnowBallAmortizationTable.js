@@ -11,7 +11,7 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
         0
       )
     );
-    
+
     return (
       <table>
         <thead>
@@ -42,58 +42,71 @@ export default function SnowBallAmortizationTable({ accounts, bonusPayment }) {
   }, [accounts]);
 
   function calculateMonthInterest(principal, rate) {
-    return principal + (principal * rate);
+    return principal + principal * rate;
   }
 
   function buildAmoritizationTableRow(accountsArray, monthsElapsed) {
-
     if (accountsArray.every((account) => account["balance Due"] <= 0)) {
       return null;
     }
 
-    let smallestAccountBalance = accountsArray.filter((account) => account["balance Due"] > 0).sort((firstBalance, secondBalance) => firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1)[0];
-    let paidOffAccountBonus = accountsArray.filter((account) => account["balance Due"] <= 0).reduce((bonus, account) => bonus += account["minimum Payment Due"], 0);
+    let smallestAccountBalance = accountsArray
+      .filter((account) => account["balance Due"] > 0)
+      .sort((firstBalance, secondBalance) =>
+        firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1
+      )[0];
+    let paidOffAccountBonus = accountsArray
+      .filter((account) => account["balance Due"] <= 0)
+      .reduce((bonus, account) => (bonus += account["minimum Payment Due"]), 0);
 
     let newAccountsArray = accountsArray.map((account) => {
-      const newBalanceDue = calculateMonthInterest(account["balance Due"], (account.APR / 100) / 12);
+      const newBalanceDue = calculateMonthInterest(
+        account["balance Due"],
+        account.APR / 100 / 12
+      );
       const payment = account["minimum Payment Due"];
-      const paymentWithBonus = payment + (bonusPayment ? bonusPayment : 0) + (paidOffAccountBonus ? paidOffAccountBonus : 0);
-      
+      const paymentWithBonus =
+        payment +
+        (bonusPayment ? bonusPayment : 0) +
+        (paidOffAccountBonus ? paidOffAccountBonus : 0);
+
       if (account === smallestAccountBalance) {
         return new Account(
           account.name,
-          (newBalanceDue - paymentWithBonus > 0 ? newBalanceDue - paymentWithBonus : 0),
+          newBalanceDue - paymentWithBonus > 0
+            ? newBalanceDue - paymentWithBonus
+            : 0,
           account["minimum Payment Due"],
           account.APR
         );
       } else {
         return new Account(
-        account.name,
-        (newBalanceDue - payment > 0 ? newBalanceDue - payment : 0),
-        account["minimum Payment Due"],
-        account.APR
+          account.name,
+          newBalanceDue - payment > 0 ? newBalanceDue - payment : 0,
+          account["minimum Payment Due"],
+          account.APR
         );
-      }      
+      }
     });
 
-    let total = newAccountsArray.reduce((totalDebt, account) => totalDebt += account["balance Due"], 0);
+    let total = newAccountsArray.reduce(
+      (totalDebt, account) => (totalDebt += account["balance Due"]),
+      0
+    );
 
     return (
       <>
         <tr>
           <td>Month {monthsElapsed}</td>
           {newAccountsArray.map((account) => {
-            return (
-                <td>{account["balance Due"].toFixed(2)}</td>
-            )
+            return <td>{account["balance Due"].toFixed(2)}</td>;
           })}
           <td>{total.toFixed(2)}</td>
           <td>{paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}</td>
         </tr>
         {buildAmoritizationTableRow(newAccountsArray, monthsElapsed + 1)}
       </>
-      
-    )
+    );
   }
 
   return (
