@@ -7,8 +7,9 @@ import {
   IconButton,
   Grid,
   Card,
+  Input,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Upload, Download, Menu } from "@mui/icons-material";
 import AccountsDisplay from "./AccountsDisplay/AccountsDisplay";
 import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
@@ -16,6 +17,7 @@ import SnowBallDisplay from "./SnowBallDisplay/SnowBallDisplay";
 function App() {
 
   let [accounts, updateAccounts] = useState([]);
+  const importFileInput = useRef(null);
 
   function exportAccounts(event) {
     event.preventDefault();
@@ -28,6 +30,23 @@ function App() {
     linkElement.setAttribute("href", dataUri);
     linkElement.setAttribute("download", exportFileDefaultName);
     linkElement.click();
+  }
+
+  function importAccounts(event) {
+    let rawData = event.target.files[0];
+
+    rawData.text()
+      .then((value) => {
+        let parsedData = JSON.parse(value);
+        console.log(parsedData);
+      })
+      .catch((err) => console.log(err));
+
+      event.target.value = null;
+  }
+
+  function importPassThru() {
+    importFileInput.current.click();
   }
 
   useEffect(() => {
@@ -61,9 +80,14 @@ function App() {
               >
                 Export Accounts
               </Button>
-              <Button color="inherit" endIcon={<Upload />}>
+              <Button 
+                color="inherit"
+                onClick={importPassThru} 
+                endIcon={<Upload />}
+              >
                 Import Accounts
               </Button>
+              <Input ref={importFileInput} type="file" component="Button" sx={{display: 'none'}} onChange={(e) => importAccounts(e)}/>
             </Toolbar>
           </AppBar>
         </Grid>
