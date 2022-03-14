@@ -1,3 +1,5 @@
+import { Add } from "@mui/icons-material";
+import { IconButton, InputAdornment, TableCell, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
 import Account from "../Account";
 import { ReactComponent as AddIcon } from "../assets/AddIcon.svg";
@@ -11,35 +13,37 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
     setNewAccount(new Account("","","",""));
   }
   return (
-    <tr key="inputRow">
-      <td>
+    <TableRow key="inputRow">
+      <TableCell>
         <form id="accountAddForm">
-          <input
-            autoFocus="autofocus"
-            placeholder="Account Name"
+          <TextField
+            variant="standard" 
+            label="Account Name"
+            InputLabelProps={{shrink: true}}
+            autoFocus={true}
             required={true}
-            type="text"
             value={newAccountInput["name"]}
             onChange={(e) =>
-              setNewAccount({ ...newAccountInput, name: e.target.value })
+              setNewAccount({...newAccountInput, name: e.target.value })
             }
-          ></input>
+          />
         </form>
-      </td>
-      <td>
-        <input
-          placeholder="Account Balance"
+      </TableCell>
+      <TableCell>
+        <TextField 
+          variant="standard"
+          label="Account Balance"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>
+          }}
           required={true}
-          form="accountAddForm"
-          step={0.01}
-          type="number"
           value={newAccountInput["balance Due"]}
-          onChange={(e) =>
-            setNewAccount({ ...newAccountInput, "balance Due": parseFloat(e.target.value) })
-          }
-        ></input>
-      </td>
-      <td>
+          onChange={(e) => setNewAccount({...newAccountInput, "balance Due": parseFloat(e.target.value) })}
+          type="number"
+          step={0.01}
+        />
+      </TableCell>
+      <TableCell>
         <input
           placeholder="APR"
           required={true}
@@ -51,8 +55,8 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
             setNewAccount({ ...newAccountInput, APR: parseFloat(e.target.value) })
           }
         ></input>
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>
         <input
           placeholder="Minimum Payment Due"
           required={true}
@@ -67,16 +71,17 @@ export default function AddAccountForm({ accounts, updateAccounts }) {
             })
           }
         ></input>
-      </td>
-      <td>
-        <button
+      </TableCell>
+      <TableCell>
+        <IconButton
+          variant="contained"
           form="accountAddForm"
           type="submit"
           onClick={(e) => handleAddAccount(e)}
         >
-          {<AddIcon />}
-        </button>
-      </td>
-    </tr>
+          <Add />
+        </IconButton>
+      </TableCell>
+    </TableRow>
   );
 }
