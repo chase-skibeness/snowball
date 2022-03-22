@@ -95,7 +95,10 @@ export default function SnowBallAmortizationTable({
           })}
           <TableCell>{total.toFixed(2)}</TableCell>
           <TableCell>
-            {paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}
+            {paidOffAccountBonus + bonusPayment > 0 ? paidOffAccountBonus + bonusPayment : "" }
+          </TableCell>
+          <TableCell>
+            {paidOffAccountBonus > 0 ? paidOffAccountBonus : "" }
           </TableCell>
         </TableRow>
         {buildAmoritizationTableRow(newAccountsArray, monthsElapsed + 1)}
@@ -108,11 +111,11 @@ export default function SnowBallAmortizationTable({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={accounts.length + 3} />
+            <TableCell colSpan={accounts.length + 4} />
           </TableRow>
           <TableRow>
             <TableCell></TableCell>
-            <TableCell colSpan={accounts.length + 2}>
+            <TableCell colSpan={accounts.length + 3}>
               Snowball Sorted Balances
             </TableCell>
           </TableRow>
@@ -122,6 +125,7 @@ export default function SnowBallAmortizationTable({
               return <TableCell key={Math.random()}>{account.name}</TableCell>;
             })}
             <TableCell>Total Debt</TableCell>
+            <TableCell>Extra $ Monthly</TableCell>
             <TableCell>Snowball Bonus</TableCell>
           </TableRow>
         </TableHead>
@@ -136,6 +140,7 @@ export default function SnowBallAmortizationTable({
               );
             })}
             <TableCell>{totalDebt}</TableCell>
+            <TableCell></TableCell>
             <TableCell></TableCell>
           </TableRow>
           {buildAmoritizationTableRow(accounts, 1)}
