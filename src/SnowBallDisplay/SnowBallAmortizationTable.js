@@ -56,12 +56,13 @@ export default function SnowBallAmortizationTable({
         account["balance Due"],
         account.APR / 100 / 12
       );
+
       const payment = account["minimum Payment Due"];
       const paymentWithBonus =
         payment +
         (bonusPayment ? bonusPayment : 0) +
         (paidOffAccountBonus ? paidOffAccountBonus : 0);
-
+      
       if (account === smallestAccountBalance) {
         return new Account(
           account.name,
@@ -91,7 +92,7 @@ export default function SnowBallAmortizationTable({
         <TableRow>
           <TableCell>Month {monthsElapsed}</TableCell>
           {newAccountsArray.map((account) => {
-            return <TableCell>{account["balance Due"].toFixed(2)}</TableCell>;
+            return (account["balance Due"] <= 0) ? <TableCell sx={{backgroundColor: "#9effae"}}>{account["balance Due"].toFixed(2)}</TableCell> : <TableCell>{account["balance Due"].toFixed(2)}</TableCell>;
           })}
           <TableCell>{total.toFixed(2)}</TableCell>
           <TableCell>
