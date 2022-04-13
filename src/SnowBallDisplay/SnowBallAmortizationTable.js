@@ -15,6 +15,7 @@ export default function SnowBallAmortizationTable({
   startPayment,
 }) {
   const [totalDebt, setTotalDebt] = useState(0);
+  let today = new Date()
 
   useEffect(() => {
     setTotalDebt(
@@ -87,10 +88,13 @@ export default function SnowBallAmortizationTable({
       0
     );
 
+    let thisMonth = new Date(today);
+    thisMonth.setMonth(thisMonth.getMonth() + monthsElapsed);
+
     return (
       <>
         <TableRow>
-          <TableCell>Month {monthsElapsed}</TableCell>
+          <TableCell>{thisMonth.toLocaleString('default', {month: 'long', year: 'numeric'})}</TableCell>
           {newAccountsArray.map((account) => {
             return (account["balance Due"] <= 0) ? <TableCell sx={{backgroundColor: "#9effae"}}>{account["balance Due"].toFixed(2)}</TableCell> : <TableCell>{account["balance Due"].toFixed(2)}</TableCell>;
           })}
@@ -132,7 +136,7 @@ export default function SnowBallAmortizationTable({
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>Start</TableCell>
+            <TableCell>{today.toLocaleString('default', {month: 'long', year: 'numeric'})}</TableCell>
             {accounts.map((account) => {
               return (
                 <TableCell key={Math.random()}>
