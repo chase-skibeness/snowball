@@ -1,6 +1,6 @@
 {
   "name": "snowball",
-  "Author": "Chase Skibeness",
+  "author": "Chase Skibeness",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
