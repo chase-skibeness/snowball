@@ -15,7 +15,7 @@ export default function SnowBallAmortizationTable({
   startPayment,
 }) {
   const [totalDebt, setTotalDebt] = useState(0);
-  let today = new Date()
+  let today = new Date();
 
   useEffect(() => {
     setTotalDebt(
@@ -43,47 +43,71 @@ export default function SnowBallAmortizationTable({
       return null;
     }
 
-    let smallestAccountBalance = accountsArray
-      .filter((account) => account["balance Due"] > 0)
-      .sort((firstBalance, secondBalance) =>
-        firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1
-      )[0];
-    let paidOffAccountBonus = accountsArray
-      .filter((account) => account["balance Due"] <= 0)
-      .reduce((bonus, account) => (bonus += account["minimum Payment Due"]), 0);
-
-    let newAccountsArray = accountsArray.map((account) => {
-      const newBalanceDue = calculateMonthInterest(
+    const appliedInterestAccountArray = accountsArray.map((account) => {
+      const newBalanceWithInterest = calculateMonthInterest(
         account["balance Due"],
         account.APR / 100 / 12
       );
 
-      const payment = account["minimum Payment Due"];
-      const paymentWithBonus =
-        payment +
-        (bonusPayment ? bonusPayment : 0) +
-        (paidOffAccountBonus ? paidOffAccountBonus : 0);
-      
-      if (account === smallestAccountBalance) {
+      return new Account(
+        account.name,
+        newBalanceWithInterest,
+        account["minimum Payment Due"],
+        account.APR
+      );
+    });
+
+    let smallestAccount = appliedInterestAccountArray
+      .filter((account) => account["balance Due"] > 0)
+      .sort((firstBalance, secondBalance) =>
+        firstBalance["balance Due"] <= secondBalance["balance Due"] ? -1 : 1
+      )[0];
+
+    let paidOffAccountBonus = appliedInterestAccountArray
+      .filter((account) => account["balance Due"] <= 0)
+      .reduce((bonus, account) => (bonus += account["minimum Payment Due"]), 0);
+
+    const appliedPaymentsAccountArray = appliedInterestAccountArray.map(
+      (account, index) => {
+        const payment = account["minimum Payment Due"];
+
+        const paymentWithBonus =
+          payment +
+          (bonusPayment ? bonusPayment : 0) +
+          (paidOffAccountBonus ? paidOffAccountBonus : 0);
+
+        let appliedPaymentBalance = 0;
+
+        if (
+          account["name"] === smallestAccount["name"] &&
+          account["balance Due"] === smallestAccount["balance Due"]
+        ) {
+          appliedPaymentBalance = account["balance Due"] - paymentWithBonus;
+        } else {
+          appliedPaymentBalance = account["balance Due"] - payment;
+        }
+
+        if (
+          appliedPaymentBalance < 0 &&
+          appliedInterestAccountArray[index + 1]
+        ) {
+          appliedInterestAccountArray[index + 1]["balance Due"] =
+            appliedInterestAccountArray[index + 1]["balance Due"] +
+            appliedPaymentBalance;
+
+          appliedPaymentBalance = 0;
+        }
+
         return new Account(
           account.name,
-          newBalanceDue - paymentWithBonus > 0
-            ? newBalanceDue - paymentWithBonus
-            : 0,
-          account["minimum Payment Due"],
-          account.APR
-        );
-      } else {
-        return new Account(
-          account.name,
-          newBalanceDue - payment > 0 ? newBalanceDue - payment : 0,
+          appliedPaymentBalance,
           account["minimum Payment Due"],
           account.APR
         );
       }
-    });
+    );
 
-    let total = newAccountsArray.reduce(
+    let total = appliedPaymentsAccountArray.reduce(
       (totalDebt, account) => (totalDebt += account["balance Due"]),
       0
     );
@@ -94,19 +118,35 @@ export default function SnowBallAmortizationTable({
     return (
       <>
         <TableRow>
-          <TableCell>{thisMonth.toLocaleString('default', {month: 'long', year: 'numeric'})}</TableCell>
-          {newAccountsArray.map((account) => {
-            return (account["balance Due"] <= 0) ? <TableCell sx={{backgroundColor: "#9effae"}}>{account["balance Due"].toFixed(2)}</TableCell> : <TableCell>{account["balance Due"].toFixed(2)}</TableCell>;
+          <TableCell>
+            {thisMonth.toLocaleString("default", {
+              month: "long",
+              year: "numeric",
+            })}
+          </TableCell>
+          {appliedPaymentsAccountArray.map((account) => {
+            return account["balance Due"] <= 0 ? (
+              <TableCell sx={{ backgroundColor: "#9effae" }}>
+                {account["balance Due"].toFixed(2)}
+              </TableCell>
+            ) : (
+              <TableCell>{account["balance Due"].toFixed(2)}</TableCell>
+            );
           })}
           <TableCell>{total.toFixed(2)}</TableCell>
           <TableCell>
-            {paidOffAccountBonus + bonusPayment > 0 ? paidOffAccountBonus + bonusPayment : "" }
+            {paidOffAccountBonus + bonusPayment > 0
+              ? paidOffAccountBonus + bonusPayment
+              : ""}
           </TableCell>
           <TableCell>
-            {paidOffAccountBonus > 0 ? paidOffAccountBonus : "" }
+            {paidOffAccountBonus > 0 ? paidOffAccountBonus : ""}
           </TableCell>
         </TableRow>
-        {buildAmoritizationTableRow(newAccountsArray, monthsElapsed + 1)}
+        {buildAmoritizationTableRow(
+          appliedPaymentsAccountArray,
+          monthsElapsed + 1
+        )}
       </>
     );
   }
@@ -136,7 +176,12 @@ export default function SnowBallAmortizationTable({
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>{today.toLocaleString('default', {month: 'long', year: 'numeric'})}</TableCell>
+            <TableCell>
+              {today.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
+            </TableCell>
             {accounts.map((account) => {
               return (
                 <TableCell key={Math.random()}>
